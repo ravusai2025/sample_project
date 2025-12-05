@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Sudhanshu",
+    "quantity": 3,
+    "price": 20.0,
+    "description": "Testing",
+    "user_id": null
+  },
+  {
+    "id": 2,
+    "name": "Keyboard",
+    "quantity": 4,
+    "price": 230.0,
+    "description": "keyboards",
+    "user_id": null
+  },
+  {
+    "id": 3,
+    "name": "mouse",
+    "quantity": 0,
+    "price": 200.0,
+    "description": "mouse",
+    "user_id": 1
+  },
+  {
+    "id": 4,
+    "name": "dfhbvoh",
+    "quantity": 2,
+    "price": 20.0,
+    "description": null,
+    "user_id": 2
+  },
+  {
+    "id": 5,
+    "name": "Power Bank",
+    "quantity": 2,
+    "price": 1000.0,
+    "description": null,
+    "user_id": 1
+  },
+  {
+    "id": 7,
+    "name": "Webcam",
+    "quantity": 1,
+    "price": 300.0,
+    "description": null,
+    "user_id": 1
+  },
+  {
+    "id": 8,
+    "name": "Keyboard",
+    "quantity": 2,
+    "price": 0.0,
+    "description": null,
+    "user_id": 2
+  },
+  {
+    "id": 9,
+    "name": "Smart TV",
+    "quantity": 3,
+    "price": 10000.0,
+    "description": null,
+    "user_id": 2
+  },
+  {
+    "id": 10,
+    "name": "Monitor",
+    "quantity": 8,
+    "price": 1000.0,
+    "description": null,
+    "user_id": 1
+  },
+  {
+    "id": 11,
+    "name": "Keyboard",
+    "quantity": 2,
+    "price": 20.0,
+    "description": null,
+    "user_id": 1
+  }
+]
