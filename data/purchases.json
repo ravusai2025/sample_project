@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "item_id": 2,
+    "quantity": 2,
+    "buyer": "admin",
+    "total_price": 460.0,
+    "user_id": 1
+  },
+  {
+    "id": 2,
+    "item_id": 1,
+    "quantity": 3,
+    "buyer": "user",
+    "total_price": 60.0,
+    "user_id": 2
+  },
+  {
+    "id": 3,
+    "item_id": 2,
+    "quantity": 2,
+    "buyer": "user",
+    "total_price": 460.0,
+    "user_id": 2
+  },
+  {
+    "id": 4,
+    "item_id": 1,
+    "quantity": 2,
+    "buyer": "admin",
+    "total_price": 40.0,
+    "user_id": 1
+  },
+  {
+    "id": 5,
+    "item_id": 2,
+    "quantity": 1,
+    "buyer": "user",
+    "total_price": 230.0,
+    "user_id": 2
+  },
+  {
+    "id": 6,
+    "item_id": 6,
+    "quantity": 1,
+    "buyer": "admin",
+    "total_price": 20000.0,
+    "user_id": 1
+  },
+  {
+    "id": 7,
+    "item_id": 6,
+    "quantity": 1,
+    "buyer": "user",
+    "total_price": 20000.0,
+    "user_id": 2
+  },
+  {
+    "id": 8,
+    "item_id": 1,
+    "quantity": 1,
+    "buyer": "user",
+    "total_price": 20.0,
+    "user_id": 2
+  },
+  {
+    "id": 9,
+    "item_id": 3,
+    "quantity": 10,
+    "buyer": "user",
+    "total_price": 2000.0,
+    "user_id": 2
+  },
+  {
+    "id": 10,
+    "item_id": 3,
+    "quantity": 2,
+    "buyer": "user",
+    "total_price": 400.0,
+    "user_id": 2
+  },
+  {
+    "id": 11,
+    "item_id": 1,
+    "quantity": 1,
+    "buyer": "user",
+    "total_price": 20.0,
+    "user_id": 2
+  },
+  {
+    "id": 12,
+    "item_id": 2,
+    "quantity": 1,
+    "buyer": "user",
+    "total_price": 230.0,
+    "user_id": 2
+  },
+  {
+    "id": 13,
+    "item_id": 3,
+    "quantity": 3,
+    "buyer": "user",
+    "total_price": 600.0,
+    "user_id": 2
+  },
+  {
+    "id": 14,
+    "item_id": 3,
+    "quantity": 2,
+    "buyer": "user",
+    "total_price": 400.0,
+    "user_id": 2
+  },
+  {
+    "id": 15,
+    "item_id": 3,
+    "quantity": 3,
+    "buyer": "admin",
+    "total_price": 600.0,
+    "user_id": 1
+  },
+  {
+    "id": 16,
+    "item_id": 10,
+    "quantity": 2,
+    "buyer": "admin",
+    "total_price": 2000.0,
+    "user_id": 1
+  },
+  {
+    "id": 17,
+    "item_id": 9,
+    "quantity": 2,
+    "buyer": "admin",
+    "total_price": 20000.0,
+    "user_id": 1
+  }
+]
