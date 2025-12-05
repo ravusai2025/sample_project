@@ -1,0 +1,7 @@
+{"ts": "2025-12-05T12:50:51.467371+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-05T12:50:51.476178+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 5}, "username": "admin"}
+{"ts": "2025-12-05T12:50:51.486667+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 5, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-05T12:51:13.996515+05:30", "action": "purchase_item", "ip": "127.0.0.1", "detail": {"purchase": {"id": 17, "item_id": 9, "quantity": 2, "buyer": "admin", "total_price": 20000.0, "user_id": 1}, "user_id": 1, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-05T12:51:14.007463+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-05T12:51:14.023480+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 6}, "username": "admin"}
+{"ts": "2025-12-05T12:51:14.034466+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 6, "username": "admin"}, "username": "admin"}
