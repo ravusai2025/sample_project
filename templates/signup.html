@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sign Up - FastAPI Marketplace</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <header>
+        <h1>FastAPI Marketplace</h1>
+        <p class="tagline">Create a new account</p>
+    </header>
+
+    <main>
+        <section class="auth-section">
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <label>Username
+                    <input id="signup-username" type="text" placeholder="Choose a username (min 3 chars)" required minlength="3" maxlength="50" />
+                </label>
+                <label>Email
+                    <input id="signup-email" type="email" placeholder="Enter your email" required />
+                </label>
+                <label>Password
+                    <input id="signup-password" type="password" placeholder="Choose a password (min 6 chars)" required minlength="6" />
+                </label>
+                <button type="submit">Sign Up</button>
+                <p id="signup-status" class="status"></p>
+            </form>
+            <p class="auth-link">
+                Already have an account? <a href="/login">Login here</a>
+            </p>
+            <p class="auth-link">
+                <a href="/">Back to Marketplace</a>
+            </p>
+        </section>
+    </main>
+
+    <script src="/static/toast.js"></script>
+    <script src="/static/auth.js"></script>
+</body>
+</html>
+
