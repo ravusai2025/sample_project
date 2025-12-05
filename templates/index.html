@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>FastAPI Marketplace</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <header>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1>RAVUS Marketplace</h1>
+                <p class="tagline">Create simple item listings and simulate purchases.</p>
+            </div>
+            <div id="auth-info" style="font-size: 0.9rem;"></div>
+        </div>
+    </header>
+
+    <main>
+        <nav class="tabs" aria-label="Marketplace features">
+            <button class="tab-button active" data-tab="create" type="button">Create listing</button>
+            <button class="tab-button" data-tab="list" type="button">Browse listings</button>
+            <button class="tab-button" data-tab="purchase" type="button">Purchase</button>
+            <button class="tab-button" data-tab="activity" type="button">Activity</button>
+        </nav>
+
+        <section id="feature-create" class="tab-pane" data-tab="create">
+            <h2>1. Create Listing</h2>
+            <div class="form-row">
+                <label>Device Name
+                    <select id="item-name" required>
+                        <option value="">Select a device...</option>
+                        <option value="Smartphone">Smartphone</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Smartwatch">Smartwatch</option>
+                        <option value="Wireless Earbuds">Wireless Earbuds</option>
+                        <option value="Gaming Console">Gaming Console</option>
+                        <option value="Smart TV">Smart TV</option>
+                        <option value="Desktop Computer">Desktop Computer</option>
+                        <option value="Monitor">Monitor</option>
+                        <option value="Keyboard">Keyboard</option>
+                        <option value="Mouse">Mouse</option>
+                        <option value="Webcam">Webcam</option>
+                        <option value="Printer">Printer</option>
+                        <option value="Router">Router</option>
+                        <option value="External Hard Drive">External Hard Drive</option>
+                        <option value="USB Flash Drive">USB Flash Drive</option>
+                        <option value="Power Bank">Power Bank</option>
+                        <option value="Bluetooth Speaker">Bluetooth Speaker</option>
+                        <option value="Headphones">Headphones</option>
+                        <option value="Camera">Camera</option>
+                    </select>
+                </label>
+                <label>Quantity
+                    <input id="item-quantity" type="number" min="0" value="1" />
+                </label>
+                <label>Price
+                    <input id="item-price" type="number" min="0" step="0.01" value="0.00" />
+                </label>
+            </div>
+            <label>Description (optional)
+                <textarea id="item-description" rows="2" placeholder="Short description"></textarea>
+            </label>
+            <button id="create-item">Publish listing</button>
+            <p id="create-item-status" class="status"></p>
+        </section>
+
+        <section id="feature-listings" class="tab-pane" data-tab="list">
+            <h2>2. Browse Listings</h2>
+            <button id="refresh-items">Refresh items</button>
+            <table id="items-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <p id="items-empty" class="muted">No items yet. Create one above.</p>
+        </section>
+
+        <section id="feature-purchase" class="tab-pane" data-tab="purchase">
+            <h2>3. Purchase Item</h2>
+            <div class="form-row">
+                <label>Item
+                    <select id="purchase-item-select">
+                        <option value="">Select an item...</option>
+                    </select>
+                </label>
+                <label>Quantity
+                    <input id="purchase-quantity" type="number" min="1" value="1" />
+                </label>
+                <label>Buyer name (optional)
+                    <input id="purchase-buyer" type="text" placeholder="Defaults to your username" />
+                </label>
+            </div>
+            <button id="purchase-item">Purchase</button>
+            <p id="purchase-status" class="status"></p>
+        </section>
+
+        <section id="feature-activity" class="tab-pane" data-tab="activity">
+            <h2>4. User Activity</h2>
+            <div id="user-activity-stats" style="margin-bottom: 1rem;"></div>
+            <h3>Recent Purchases</h3>
+            <button id="refresh-purchases">Refresh purchases</button>
+            <table id="purchases-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Buyer</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <p id="purchases-empty" class="muted">No purchases yet.</p>
+        </section>
+    </main>
+    <script src="/static/toast.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
