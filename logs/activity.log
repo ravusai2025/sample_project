@@ -1,3 +1,9 @@
+
+{"ts": "2025-12-05T12:48:25.923088+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 5}, "username": "admin"}
+{"ts": "2025-12-05T12:48:25.935813+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 4, "purchases_count": 5, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-05T12:49:01.814328+05:30", "action": "create_item", "ip": "127.0.0.1", "detail": {"item": {"id": 11, "name": "Keyboard", "quantity": 2, "price": 20.0, "description": null, "user_id": 1}, "user_id": 1, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-05T12:49:01.832182+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-05T12:49:01.832182+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 5, "username": "admin"}, "username": "admin"}
 {"ts": "2025-12-05T12:50:51.467371+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
 {"ts": "2025-12-05T12:50:51.476178+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 5}, "username": "admin"}
 {"ts": "2025-12-05T12:50:51.486667+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 5, "username": "admin"}, "username": "admin"}
@@ -5,3 +11,28 @@
 {"ts": "2025-12-05T12:51:14.007463+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
 {"ts": "2025-12-05T12:51:14.023480+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 6}, "username": "admin"}
 {"ts": "2025-12-05T12:51:14.034466+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 6, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-05T18:48:29.083950+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-05T18:48:29.096449+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 6}, "username": "admin"}
+{"ts": "2025-12-05T18:48:29.105520+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 6, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-05T18:48:41.428401+05:30", "action": "purchase_item", "ip": "127.0.0.1", "detail": {"purchase": {"id": 18, "item_id": 10, "quantity": 2, "buyer": "admin", "total_price": 2000.0, "user_id": 1}, "user_id": 1, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-05T18:48:41.445066+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-05T18:48:41.451550+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 7}, "username": "admin"}
+{"ts": "2025-12-05T18:48:41.457088+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 7, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-06T00:03:50.853136+05:30", "action": "user_login", "ip": "127.0.0.1", "detail": {"user_id": 1, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-06T00:03:51.664193+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-06T00:03:51.678505+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 7}, "username": "admin"}
+{"ts": "2025-12-06T00:03:51.686687+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 7, "username": "admin"}, "username": "admin"}
+{"ts": "2025-12-06T00:11:25.313610+05:30", "action": "user_signup", "ip": "127.0.0.1", "detail": {"user_id": 3, "username": "ujjwal"}, "username": "ujjwal"}
+{"ts": "2025-12-06T00:19:24.408100+05:30", "action": "user_signup", "ip": "127.0.0.1", "detail": {"user_id": 4, "username": "raghu"}, "username": "raghu"}
+{"ts": "2025-12-06T01:21:31.937034+05:30", "action": "user_signup", "ip": "127.0.0.1", "detail": {"user_id": 5, "username": "sudhanshu"}, "username": "sudhanshu"}
+{"ts": "2025-12-06T01:21:41.822180+05:30", "action": "user_login", "ip": "127.0.0.1", "detail": {"user_id": 5, "username": "sudhanshu"}, "username": "sudhanshu"}
+{"ts": "2025-12-06T01:21:42.729974+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-06T01:21:42.736438+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 5, "count": 0}, "username": "sudhanshu"}
+{"ts": "2025-12-06T01:21:42.745462+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 5, "listings_count": 0, "purchases_count": 0, "username": "sudhanshu"}, "username": "sudhanshu"}
+{"ts": "2025-12-06T01:21:58.144677+05:30", "action": "purchase_item", "ip": "127.0.0.1", "detail": {"purchase": {"id": 19, "item_id": 9, "quantity": 2, "buyer": "sudhanshu", "total_price": 20000.0, "user_id": 5}, "user_id": 5, "username": "sudhanshu"}, "username": "sudhanshu"}
+{"ts": "2025-12-06T01:21:58.182528+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-06T01:21:58.213675+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 5, "count": 1}, "username": "sudhanshu"}
+{"ts": "2025-12-06T01:21:58.240674+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 5, "listings_count": 0, "purchases_count": 1, "username": "sudhanshu"}, "username": "sudhanshu"}
+{"ts": "2025-12-06T09:39:58.706326+05:30", "action": "list_items", "ip": "127.0.0.1", "detail": {"count": 10}}
+{"ts": "2025-12-06T09:39:58.722711+05:30", "action": "list_purchases_user", "ip": "127.0.0.1", "detail": {"user_id": 1, "count": 7}, "username": "admin"}
+{"ts": "2025-12-06T09:39:58.727733+05:30", "action": "get_user_activity", "ip": "127.0.0.1", "detail": {"user_id": 1, "listings_count": 5, "purchases_count": 7, "username": "admin"}, "username": "admin"}
