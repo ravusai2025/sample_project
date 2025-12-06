@@ -1,4 +1,4 @@
-# FastAPI Marketplace
+# RavusMart
 
 Simple demo marketplace application with:
 
@@ -24,3 +24,4 @@ uvicorn app_main:app --reload
 ```
 
 Then open http://127.0.0.1:8000/ in your browser.
+
