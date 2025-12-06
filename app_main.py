@@ -1,7 +1,14 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+import os
+import asyncio
+
+try:
+    import httpx
+except Exception:
+    httpx = None
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import HTMLResponse
@@ -91,6 +98,12 @@ PURCHASES_FILE = DATA_DIR / "purchases.json"
 USERS_FILE = DATA_DIR / "users.json"
 ACTIVITY_LOG_FILE = LOGS_DIR / "activity.log"
 APPLICATION_LOG_FILE = LOGS_DIR / "application.log"
+
+# ServiceNow configuration (use env vars)
+SNOW_URL = os.getenv("SERVICENOW_URL")
+SNOW_USER = os.getenv("SERVICENOW_USER")
+SNOW_PASS = os.getenv("SERVICENOW_PASS")
+SNOW_TABLE = os.getenv("SERVICENOW_TABLE", "incident")
 
 DATA_DIR.mkdir(exist_ok=True)
 LOGS_DIR.mkdir(exist_ok=True)
@@ -233,10 +246,82 @@ def log_event(action: str, detail: dict | None = None, request: Optional[Request
     if uname:
         entry["username"] = uname
 
-    # Send API request logs to application.log, leave action logs in activity.log
+    # Send only generic HTTP request logs to application.log; other action logs (including pincode lookups) go to activity.log
     target_file = APPLICATION_LOG_FILE if action == "http_request" else ACTIVITY_LOG_FILE
     with target_file.open("a", encoding="utf-8") as f:
         f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+    # Decide whether this entry should be sent to ServiceNow
+    try:
+        should_alert = False
+        # By default, send events that indicate failures or explicit test events
+        if action.endswith("_failed") or action in ("test_snow",):
+            should_alert = True
+
+        # Fire-and-forget the notifier to avoid blocking request processing
+        if should_alert and httpx is not None and SNOW_URL and SNOW_USER and SNOW_PASS:
+            payload = {
+                "short_description": f"{action} - {entry.get('detail', {}).get('username') or entry.get('username') or 'unknown'}",
+                "description": json.dumps(entry, ensure_ascii=False),
+            }
+
+            async def _schedule():
+                try:
+                    await _post_to_servicenow_with_retries(payload)
+                except Exception:
+                    # On unexpected errors, persist failure to activity log directly
+                    _append_log_file(ACTIVITY_LOG_FILE, {"ts": datetime.now(timezone.utc).isoformat(), "action": "servicenow_unexpected_error"})
+
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(_schedule())
+            except RuntimeError:
+                # No running loop; run in background thread
+                import threading
+                threading.Thread(target=lambda: asyncio.run(_schedule()), daemon=True).start()
+    except Exception:
+        # Ensure logging never raises
+        pass
+
+
+def _append_log_file(target: Path, entry: dict) -> None:
+    try:
+        with target.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception:
+        # Best-effort only
+        pass
+
+
+async def _post_to_servicenow_with_retries(payload: dict[str, Any], retries: int = 3, backoff_base: float = 1.0) -> None:
+    """Post payload to ServiceNow with simple retry/backoff."""
+    if httpx is None:
+        raise RuntimeError("httpx not installed")
+
+    url = f"{SNOW_URL.rstrip('/')}/api/now/table/{SNOW_TABLE}"
+    headers = {"Accept": "application/json", "Content-Type": "application/json"}
+
+    attempt = 0
+    last_exc = None
+    async with httpx.AsyncClient(timeout=10.0, verify=True) as client:
+        while attempt < retries:
+            try:
+                resp = await client.post(url, json=payload, headers=headers, auth=(SNOW_USER, SNOW_PASS))
+                resp.raise_for_status()
+                return
+            except Exception as exc:
+                last_exc = exc
+                attempt += 1
+                await asyncio.sleep(backoff_base * (2 ** (attempt - 1)))
+
+    # If reached here, all retries failed — persist to activity log for later inspection
+    failure_entry = {
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "action": "servicenow_notify_failed",
+        "error": str(last_exc),
+        "payload": payload,
+    }
+    _append_log_file(ACTIVITY_LOG_FILE, failure_entry)
 
 
 # User management functions
@@ -519,3 +604,37 @@ async def reset_data(request: Request) -> None:
     save_items([])
     save_purchases([])
     log_event("reset_data", {}, request=request)
+
+
+@app.get("/api/pincode/{pincode}")
+async def pincode_lookup(pincode: str, request: Request):
+    """Proxy endpoint to lookup postal pincode using external API and log the call."""
+    if httpx is None:
+        log_event("pincode_lookup_failed", {"pincode": pincode, "error": "httpx_not_installed"}, request=request)
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Lookup service unavailable")
+
+    url = f"https://api.postalpincode.in/pincode/{pincode}"
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.get(url)
+            resp.raise_for_status()
+            data = resp.json()
+    except Exception as exc:
+        log_event("pincode_lookup_failed", {"pincode": pincode, "error": str(exc)}, request=request)
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Postal lookup failed")
+
+    # Log successful lookup to application log
+    result_count = len(data) if isinstance(data, list) else 0
+    log_event("pincode_lookup", {"pincode": pincode, "status_code": getattr(resp, 'status_code', None), "result_count": result_count}, request=request)
+    return data
+
+
+@app.post("/api/log_pincode")
+async def log_pincode(payload: dict, request: Request):
+    """Accept a small client-side log about a postal lookup and write it to activity log."""
+    pincode = payload.get("pincode")
+    status = payload.get("status")
+    detail = {"pincode": pincode, "status": status, "meta": payload.get("meta")}
+    # Log as an action that will go to activity.log
+    log_event("pincode_lookup", detail, request=request)
+    return {"ok": True}
