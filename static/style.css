@@ -355,6 +355,94 @@ pre::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.5);
 }
 
+/* Small inline loader for form lookups */
+.inline-loader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0,0,0,0.1);
+    border-top-color: #667eea;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.hidden { display: none; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Pincode row layout and small lookup button */
+.pincode-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Ensure input and lookup button share the same height for perfect alignment */
+.pincode-row input[type="text"] {
+    height: 32px;
+    padding: 0 0.6rem;
+}
+
+.pincode-lookup-btn {
+    padding: 0 0.45rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    height: 32px; /* match input height */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pincode-lookup-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Auth container: put info and form side-by-side on wide screens */
+.auth-container {
+    display: flex;
+    min-height: 100vh;
+    gap: 2rem;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.auth-info {
+    flex: 0 0 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: inherit;
+}
+
+.auth-info .inner-info { text-align: center; }
+.auth-info h1 { margin: 0 0 0.5rem 0; font-size: 2rem; }
+.auth-info .tagline { margin: 0; color: inherit; }
+
+.auth-section { flex: 1 1 55%; display:flex; align-items:center; justify-content:center; }
+
+.auth-inner { width: 340px; max-width: 92%; padding: 0.9rem; background: transparent; border-radius: 0; box-shadow: none; }
+
+/* Smaller lookup button variant */
+.pincode-lookup-btn { padding: 0.25rem 0.45rem; font-size: 0.8rem; height: 32px; }
+
+@media (max-width: 960px) {
+    .auth-container { flex-direction: column; }
+    .auth-info { order: -1; flex: none; padding: 1.25rem; }
+    .auth-section { padding: 1rem; }
+    .auth-inner { width: 100%; padding: 1rem; }
+}
+
 #items-table {
     width: 100%;
     border-collapse: separate;
@@ -419,7 +507,7 @@ pre::-webkit-scrollbar-thumb:hover {
 
 .auth-section {
     max-width: 450px;
-    margin: 3rem auto;
+    margin: 1.25rem auto;
     animation: slideUp 0.5s ease;
 }
 
@@ -434,13 +522,14 @@ pre::-webkit-scrollbar-thumb:hover {
     }
 }
 
+
 .auth-section h2 {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .auth-section label {
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.6rem;
 }
 
 .auth-section input[type="text"],
@@ -448,13 +537,15 @@ pre::-webkit-scrollbar-thumb:hover {
 .auth-section input[type="password"] {
     width: 100%;
     box-sizing: border-box;
+    padding: 0.35rem 0.6rem;
+    height: 32px;
 }
 
 .auth-section button {
     width: 100%;
-    padding: 1rem;
-    font-size: 1.05rem;
-    margin-top: 0.5rem;
+    padding: 0.6rem;
+    font-size: 0.95rem;
+    margin-top: 0.3rem;
 }
 
 .auth-link {
