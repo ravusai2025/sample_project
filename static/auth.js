@@ -56,6 +56,110 @@ if (document.getElementById("login-form") || document.getElementById("signup-for
 // Handle signup form
 const signupForm = document.getElementById("signup-form");
 if (signupForm) {
+    // Pincode lookup: debounce and auto-fill address
+    const pincodeInput = qs("signup-pincode");
+    const addressInput = qs("signup-address");
+    let _pincodeTimer = null;
+
+    const pincodeLoader = qs("signup-pincode-loader");
+
+    async function lookupPincode(pincode) {
+        const statusEl = qs("signup-status");
+        if (!pincode || pincode.trim().length === 0) {
+            if (addressInput) addressInput.value = "";
+            if (statusEl) { statusEl.textContent = ""; statusEl.className = "status"; }
+            return;
+        }
+        try {
+            // show loader and disable input while fetching
+            if (pincodeLoader) pincodeLoader.classList.remove("hidden");
+            if (pincodeInput) pincodeInput.disabled = true;
+            if (pincodeBtn) pincodeBtn.disabled = true;
+
+            const res = await fetch(`https://api.postalpincode.in/pincode/${encodeURIComponent(pincode.trim())}`);
+            if (!res.ok) {
+                throw new Error(`Postal API returned ${res.status}`);
+            }
+            const data = await res.json();
+            if (!Array.isArray(data) || data.length === 0) {
+                if (statusEl) { statusEl.textContent = "PIN code not found."; statusEl.className = "status error"; }
+                try { await requestJSON("/api/log_pincode", { method: "POST", body: JSON.stringify({ pincode: pincode, status: "not_found" }) }); } catch (e) {}
+                return;
+            }
+            const first = data[0];
+            if (!first || !Array.isArray(first.PostOffice) || first.PostOffice.length === 0) {
+                if (statusEl) { statusEl.textContent = "PIN code not found."; statusEl.className = "status error"; }
+                try { await requestJSON("/api/log_pincode", { method: "POST", body: JSON.stringify({ pincode: pincode, status: "not_found" }) }); } catch (e) {}
+                return;
+            }
+            const po = first.PostOffice[0];
+            if (!po) {
+                if (statusEl) { statusEl.textContent = "PIN code not found."; statusEl.className = "status error"; }
+                try { await requestJSON("/api/log_pincode", { method: "POST", body: JSON.stringify({ pincode: pincode, status: "not_found" }) }); } catch (e) {}
+                return;
+            }
+            const parts = [po.Name, po.District, po.State, po.Country].filter(Boolean);
+            if (addressInput) addressInput.value = parts.join(", ");
+            if (statusEl) { statusEl.textContent = "Address filled from PIN code."; statusEl.className = "status"; }
+            // Notify server so it can log this lookup into activity.log
+            try {
+                const meta = { result_count: Array.isArray(data) ? data.length : 0 };
+                await requestJSON("/api/log_pincode", {
+                    method: "POST",
+                    body: JSON.stringify({ pincode: pincode, status: "success", meta: meta, first: po }),
+                });
+            } catch (e) {
+                console.warn("Failed to send pincode log to server:", e);
+            }
+        } catch (err) {
+            // show user-friendly error
+            if (statusEl) { statusEl.textContent = `Lookup failed: ${err.message}`; statusEl.className = "status error"; }
+            console.warn("Pincode lookup failed:", err);
+        } finally {
+            if (pincodeLoader) pincodeLoader.classList.add("hidden");
+            if (pincodeInput) pincodeInput.disabled = false;
+            if (pincodeBtn) pincodeBtn.disabled = false;
+        }
+    }
+
+    const pincodeBtn = qs("signup-pincode-btn");
+    if (pincodeInput) {
+        // Keep input free for typing; do not call API on change anymore.
+        // Optionally, we can restrict non-digit chars while typing.
+        pincodeInput.addEventListener("input", (e) => {
+            // strip nondigits in-place to help the user
+            const v = e.target.value || "";
+            const digits = v.replace(/\D/g, "");
+            if (v !== digits) e.target.value = digits;
+        });
+        // keep blur as a no-op (no automatic lookup)
+    }
+
+    if (pincodeBtn) {
+        pincodeBtn.addEventListener("click", (e) => {
+            const statusEl = qs("signup-status");
+            if (statusEl) { statusEl.textContent = ""; statusEl.className = "status"; }
+            const code = pincodeInput ? (pincodeInput.value || "").trim() : "";
+            if (!code) {
+                if (statusEl) {
+                    statusEl.textContent = "Please enter a 6-digit pincode before looking up.";
+                    statusEl.className = "status error";
+                }
+                return;
+            }
+            // Only allow 6-digit lookup
+            const digits = code.replace(/\D/g, "");
+            if (digits.length !== 6) {
+                if (statusEl) {
+                    statusEl.textContent = "Please enter a 6-digit pincode before looking up.";
+                    statusEl.className = "status error";
+                }
+                return;
+            }
+            // Call lookupPincode and show loader; the function handles loader state
+            lookupPincode(digits);
+        });
+    }
     signupForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const statusEl = qs("signup-status");
@@ -65,6 +169,8 @@ if (signupForm) {
         const username = qs("signup-username").value.trim();
         const email = qs("signup-email").value.trim();
         const password = qs("signup-password").value;
+        const pincode = qs("signup-pincode") ? qs("signup-pincode").value.trim() : "";
+        const address = qs("signup-address") ? qs("signup-address").value.trim() : "";
 
         if (!username || username.length < 3) {
             statusEl.textContent = "Username must be at least 3 characters.";
@@ -84,8 +190,26 @@ if (signupForm) {
             return;
         }
 
+        if (!pincode) {
+            statusEl.textContent = "Pincode is required.";
+            statusEl.className = "status error";
+            return;
+        }
+
+        if (!address) {
+            statusEl.textContent = "Address could not be determined from the provided pincode.";
+            statusEl.className = "status error";
+            return;
+        }
+
+        const submitBtn = signupForm.querySelector('button[type="submit"]');
         try {
-            const payload = { username, email, password };
+            // disable submit and show signing status
+            if (submitBtn) submitBtn.disabled = true;
+            statusEl.textContent = "Signing up...";
+            statusEl.className = "status";
+
+            const payload = { username, email, password, pincode, address };
             const user = await requestJSON("/api/signup", {
                 method: "POST",
                 body: JSON.stringify(payload),
@@ -99,6 +223,8 @@ if (signupForm) {
         } catch (err) {
             statusEl.textContent = `Signup failed: ${err.message}`;
             statusEl.className = "status error";
+        } finally {
+            if (submitBtn) submitBtn.disabled = false;
         }
     });
 }
